@@ -104,6 +104,12 @@ if (-not $bsha) { $bsha = (& git -C $bnd rev-parse --verify --quiet "$BindingsRe
 if (-not $bsha) { throw "the fork has no ref $BindingsRef" }
 Run git @('-C', $bnd, 'checkout', '--quiet', '--detach', $bsha)
 if (-not (Test-Path (Join-Path $bnd "bindings\$GdVersion"))) { throw "bindings/$GdVersion is not in the fork at that ref" }
+# GD Solver F: upstream geode-sdk/bindings at 1343695 declares MessageThreadsPage::ownsTouchPrio as `bool` where every base
+# declares `TodoReturn`, which clang refuses ("different return type than the function it overrides"). Make it match the base.
+$bro = Join-Path $bnd "bindings\$GdVersion\GeometryDash.bro"
+$broText = [IO.File]::ReadAllText($bro)
+$fixed = $broText.Replace('virtual bool ownsTouchPrio() = win 0x3ff70;', 'virtual TodoReturn ownsTouchPrio() = win 0x3ff70;')
+if ($fixed -ne $broText) { [IO.File]::WriteAllText($bro, $fixed); Write-Host "bindings fixup: MessageThreadsPage::ownsTouchPrio -> TodoReturn" }
 $env:GEODE_BINDINGS_REPO_PATH = $bnd
 
 Step "configure and build ($Compiler, GD $GdVersion, GEODE_COMP_GD_VERSION $Comp)"
