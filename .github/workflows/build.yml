@@ -86,7 +86,27 @@ jobs:
         env:
           GDSOLVER_BINDINGS_REPO: ${{ vars.GDSOLVER_BINDINGS_REPO || 'https://github.com/geode-sdk/bindings' }}
           GDSOLVER_BINDINGS_REF: ${{ vars.GDSOLVER_BINDINGS_REF || '13436953582c8bfa6d7a91392c9f575d5bafec83' }}
-        run: ./scripts/ci-build-2209.ps1 -Work "$env:RUNNER_TEMP/ci-work" -Out "$env:GITHUB_WORKSPACE/output" -CodegenCache "$env:RUNNER_TEMP/codegen-cache"
+        run: ./scripts/ci-build-2209.ps1 -Work "$env:RUNNER_TEMP/ci-work" -Out "$env:GITHUB_WORKSPACE/output" -CodegenCache "$env:RUNNER_TEMP/codegen-cache" *>&1 | Tee-Object -FilePath "$env:RUNNER_TEMP/build.log"
+
+      # GD Solver F: a failed build posts its error lines and the log's tail as annotations, which can be read
+      # through the API where the raw job log cannot.
+      - name: Report the build log
+        if: failure() && steps.build.outcome == 'failure'
+        shell: pwsh
+        run: |
+          $log = "$env:RUNNER_TEMP/build.log"
+          if (-not (Test-Path $log)) { Write-Output "::error title=no log::build.log was not written"; exit 0 }
+          function Emit($title, $arr) {
+            if (-not $arr) { return }
+            $msg = (($arr -join "`n") -replace '%', '%25' -replace "`r", '' -replace "`n", '%0A')
+            Write-Output "::error title=$title::$msg"
+          }
+          $errs = @(Select-String -Path $log -Pattern '(error|FAILED|fatal|throw|exception)' | Select-Object -First 60 | ForEach-Object { $_.Line })
+          Emit 'error lines' $errs
+          $tail = @(Get-Content $log -Tail 240)
+          Emit 'log tail 1' $tail[0..79]
+          Emit 'log tail 2' $tail[80..159]
+          Emit 'log tail 3' $tail[160..239]
 
       - name: Upload the package
         uses: actions/upload-artifact@v7
