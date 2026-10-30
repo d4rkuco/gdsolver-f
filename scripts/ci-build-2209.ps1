@@ -110,6 +110,12 @@ $bro = Join-Path $bnd "bindings\$GdVersion\GeometryDash.bro"
 $broText = [IO.File]::ReadAllText($bro)
 $fixed = $broText.Replace('virtual bool ownsTouchPrio() = win 0x3ff70;', 'virtual TodoReturn ownsTouchPrio() = win 0x3ff70;')
 if ($fixed -ne $broText) { [IO.File]::WriteAllText($bro, $fixed); Write-Host "bindings fixup: MessageThreadsPage::ownsTouchPrio -> TodoReturn" }
+# ...and its inline/ folder still has bodies for members the 2.209 port had not declared yet. The mod uses none of these
+# classes, so their inline bodies are left out of the build.
+foreach ($f in @('SongInfoObject.cpp', 'GJPFollowCommandLayer.cpp')) {
+    $p = Join-Path $bnd "bindings\$GdVersion\inline\$f"
+    if (Test-Path $p) { Remove-Item $p; Write-Host "bindings fixup: left out inline/$f" }
+}
 $env:GEODE_BINDINGS_REPO_PATH = $bnd
 
 Step "configure and build ($Compiler, GD $GdVersion, GEODE_COMP_GD_VERSION $Comp)"
@@ -124,7 +130,7 @@ if ($Compiler -eq 'clang') {
               '-DGEODE_CODEGEN_CMAKE_ARGS=-DCMAKE_C_COMPILER=clang;-DCMAKE_CXX_COMPILER=clang++;-G Ninja',
               '-DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON', '-DGEODE_TARGET_PLATFORM=Win64',
               '-DCMAKE_LINKER_TYPE=LLD', '-DGDSOLVER_BUILD_DP=OFF')
-    $buildArgs = @('--build', $build, '--config', 'Release', '--parallel')
+    $buildArgs = @('--build', $build, '--config', 'Release', '--parallel', '--', '-k', '0')   # GD Solver F: list every error in one run
 } else {
     $cfg += @('-G', 'Visual Studio 17 2022', '-A', 'x64')
     $buildArgs = @('--build', $build, '--config', 'RelWithDebInfo', '--parallel')
