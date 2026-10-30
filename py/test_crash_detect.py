@@ -152,10 +152,10 @@ def main() -> int:
             pids["p"] = []
             w6 = W.CrashWatch(root, titles=lambda p: [], clock=lambda: clock["t"])
             check(w6.check() == "", "a Geode log that existed before the launch is not this launch's (its guard line is not read)")
-            (logdir / "Geode 2026-10-20 08.00.00.log").write_text("08:00:00 INFO  [Main] [Geode]: Loading mod gdsolver.solver\n", encoding="utf-8")
+            (logdir / "Geode 2026-10-20 08.00.00.log").write_text("08:00:00 INFO  [Main] [Geode]: Loading mod d4rkuco.gdsolver-f\n", encoding="utf-8")
             check(w6.check() == "", "a new log without the guard line is no refusal")
             (logdir / "Geode 2026-10-20 08.00.00.log").write_text(
-                "08:00:00 INFO  [Main] [Geode]: Loading mod gdsolver.solver\n" + guard_line + "\n", encoding="utf-8")
+                "08:00:00 INFO  [Main] [Geode]: Loading mod d4rkuco.gdsolver-f\n" + guard_line + "\n", encoding="utf-8")
             why = w6.check()
             check("exe guard" in why and "GD v1792203143" in why and "same build of the game" in why,
                   "the guard line in this launch's log is a refusal, with the mod's own words: " + why)

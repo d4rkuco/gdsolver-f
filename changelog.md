@@ -1,3 +1,10 @@
+# GD Solver F (d4rkuco), based on v0.7.0
+
+ * Renamed to GD Solver F (`d4rkuco.gdsolver-f`); the original authors stay credited.
+ * New setting **Show the level while solving** (on by default): a solve turns the screen on at its
+   start through the F5 key's own path, so it is watched at 1x; F5 and the arrow keys work as before.
+ * The build uses geode-sdk/bindings at 1343695 when no repository variables are set.
+
 # v0.7.0
 
  * **Geometry Dash 2.2091 (Windows)**, as v0.6.0. No Android build.

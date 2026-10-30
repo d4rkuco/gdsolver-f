@@ -75,6 +75,10 @@ inline bool uiConfigureSession(int levelId) {
         // g_realtimeOverride is off, so the render key's ON (reset, then real time) puts the pass and the drawing
         // back with no further switch, and its OFF takes them away again.
         g_cfg.skipRender = true;
+        // GD Solver F: with "Show the level while solving" on, the first update of the session
+        // turns the screen on the way F5 does (hooks_gamelayer.cpp), so the solve is watched at
+        // 1x from the start; the arrow keys change the speed and F5 still sends it dark.
+        g_watchOnStart = geode::Mod::get()->getSettingValue<bool>("watch-solve");
         // A plan that does not clear ends in a death, and the session has to survive that to be
         // repaired and tried again. The loop closes the session itself, on a clear or when it
         // gives up

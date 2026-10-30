@@ -20,7 +20,7 @@ from gdtas.worker import WorkerError, check_plan_buttons, plan_masks  # noqa: E4
 def package(path: Path, dll_bytes: bytes) -> Path:
     with zipfile.ZipFile(path, "w") as z:
         z.writestr("mod.json", "{}")
-        z.writestr("gdsolver.solver.dll", dll_bytes)
+        z.writestr("d4rkuco.gdsolver-f.dll", dll_bytes)
     return path
 
 

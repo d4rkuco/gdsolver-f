@@ -195,6 +195,9 @@ inline long long g_watchStartTick = -1;   // tick at which we switched to realti
 // Variant fired on the wall clock (cfg `watchafter=<seconds>`). The condition "after skipping for
 // a long time" cannot be expressed in tick / x
 inline double g_watchAfterSec = 0.0;
+// GD Solver F: show the level from the start of a solve (setting "watch-solve"). Fired once, on
+// the first update of the session, through renderTogglePress() -- the same entry point as F5.
+inline bool g_watchOnStart = false;
 // Variant that keeps going back and forth (cfg `watchcycle=<seconds>`). Flips realtime <-> fast
 // every N wall-clock seconds
 inline double g_watchCycleSec = 0.0;

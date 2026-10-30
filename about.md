@@ -1,4 +1,10 @@
-# GD Solver
+# GD Solver F
+
+**d4rkuco's version of [GD Solver](https://github.com/gdsolver/gdsolver)** (MIT, by the gdsolver authors).
+What is different: a solve **shows the level and plays at 1x from the start** (setting
+*Show the level while solving*, on by default; the arrow keys change the speed and F5 goes back to
+the fast, dark search). Everything else, including the record protection below, is the original's.
+
 
 Give it a level and it looks for an input sequence that clears it, by playing
 the level inside your own copy of the game.

@@ -1727,6 +1727,14 @@ class $modify(GJBaseGameLayer) {
             if (!itermap::seeking() && g_fxSweep) sweepCircleWaves();
         }
         ev("BGL_update_pre", dt);
+        // GD Solver F: "Show the level while solving" -- press F5 once for the player, through the
+        // key's own function, as soon as the solve's session is running.
+        if (g_watchOnStart && g_started && !g_sessionOver && g_cfg.dpSolve
+            && g_secRenderWas < 0 && !g_visResetPending && !renderingOn()) {
+            g_watchOnStart = false;
+            log::info("watch-solve: showing the level while solving (F5 equivalent)");
+            renderTogglePress();
+        }
         // cfg `watchat`: at the given tick, cause the same state transition as F8 (return to
         // realtime). Must be the same transition as the F8 handler (a different path would
         // measure something different)

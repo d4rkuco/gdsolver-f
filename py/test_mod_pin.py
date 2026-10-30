@@ -27,7 +27,7 @@ def check(cond, what):
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="modpin_"))
     W.MOD_CACHE = tmp / "cache"
-    build = tmp / "gdsolver.solver.geode"
+    build = tmp / "d4rkuco.gdsolver-f.geode"
     build.write_bytes(b"package A")
 
     pinned, digest = W.snapshot_mod(build)

@@ -4,24 +4,38 @@
 		"win": "2.209",
 		"android": "2.2081"
 	},
-	"id": "gdsolver.solver",
-	"name": "GD Solver",
+	"id": "d4rkuco.gdsolver-f",
+	"name": "GD Solver F",
 	"version": "v0.7.0",
-	"developers": ["gdsolver"],
-	"description": "Automatically finds an input sequence that clears a level, with the game itself as the verifier.",
-	"tags": ["gameplay", "utility", "offline", "cheat"],
+	"developers": [
+		"d4rkuco",
+		"gdsolver"
+	],
+	"description": "d4rkuco's version of GD Solver: finds an input sequence that clears a level and lets you watch it solve.",
+	"tags": [
+		"gameplay",
+		"utility",
+		"offline",
+		"cheat"
+	],
 	"links": {
-		"source": "https://github.com/gdsolver/gdsolver"
+		"source": "https://github.com/d4rkuco/gdsolver-f"
 	},
 	"issues": {
 		"info": "Report problems on the GitHub issue tracker.",
-		"url": "https://github.com/gdsolver/gdsolver/issues"
+		"url": "https://github.com/d4rkuco/gdsolver-f/issues"
 	},
 	"settings": {
 		"play-menu": {
 			"type": "bool",
 			"name": "Choose the mode on Play",
 			"description": "Clicking a level's play button opens a menu: Normal, Replay or Solve. Off, a click just plays the level, as without the mod, and holding the play button opens the menu instead.",
+			"default": true
+		},
+		"watch-solve": {
+			"type": "bool",
+			"name": "Show the level while solving",
+			"description": "On, a solve shows the level and plays at 1x from the start (the arrow keys change the speed, F5 turns the screen off for the fast search). Off, it solves dark and silent like the original GD Solver, which is much faster.",
 			"default": true
 		},
 		"key-overlay": {

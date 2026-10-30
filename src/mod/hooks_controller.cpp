@@ -16,10 +16,10 @@
 // pads.)
 //
 // The gate is per process, decided once at mod load: a worker data root
-// (--geode:gdsolver.solver.data-root=.../worker-N/...) loses the pad, everything else
+// (--geode:d4rkuco.gdsolver-f.data-root=.../worker-N/...) loses the pad, everything else
 // keeps it — the mod merely being loaded must not change human play (the same
 // principle as the recording block, user decision 2026-08-23). The launch argument
-// --geode:gdsolver.solver.controller=off|on overrides in either direction; a human demo
+// --geode:d4rkuco.gdsolver-f.controller=off|on overrides in either direction; a human demo
 // recorded on a pad inside a worker needs controller=on.
 #include "mod/config.hpp"
 

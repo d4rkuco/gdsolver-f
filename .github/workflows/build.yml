@@ -15,6 +15,8 @@
 #
 # This can only prove the mod compiles. The behaviour bar -- py/quick_regress.py and the cold
 # regression -- needs Geometry Dash itself, so it stays a local step.
+# GD Solver F: with no repository variables set, the build uses geode-sdk/bindings at 1343695 (2026-10-18), the last commit
+# that carries bindings/2.209 and 2.2091 before the "Cocos mappings" layout change, which the pinned SDK (v5.10.1) predates.
 name: Build
 
 on:
@@ -62,8 +64,8 @@ jobs:
         id: bindings
         shell: pwsh
         env:
-          REPO: ${{ vars.GDSOLVER_BINDINGS_REPO }}
-          REF: ${{ vars.GDSOLVER_BINDINGS_REF }}
+          REPO: ${{ vars.GDSOLVER_BINDINGS_REPO || 'https://github.com/geode-sdk/bindings' }}
+          REF: ${{ vars.GDSOLVER_BINDINGS_REF || '13436953582c8bfa6d7a91392c9f575d5bafec83' }}
         run: |
           if ($env:REF -match '^[0-9a-f]{40}$') { $sha = $env:REF }
           else {
@@ -82,8 +84,8 @@ jobs:
         id: build
         shell: pwsh
         env:
-          GDSOLVER_BINDINGS_REPO: ${{ vars.GDSOLVER_BINDINGS_REPO }}
-          GDSOLVER_BINDINGS_REF: ${{ vars.GDSOLVER_BINDINGS_REF }}
+          GDSOLVER_BINDINGS_REPO: ${{ vars.GDSOLVER_BINDINGS_REPO || 'https://github.com/geode-sdk/bindings' }}
+          GDSOLVER_BINDINGS_REF: ${{ vars.GDSOLVER_BINDINGS_REF || '13436953582c8bfa6d7a91392c9f575d5bafec83' }}
         run: ./scripts/ci-build-2209.ps1 -Work "$env:RUNNER_TEMP/ci-work" -Out "$env:GITHUB_WORKSPACE/output" -CodegenCache "$env:RUNNER_TEMP/codegen-cache"
 
       - name: Upload the package
